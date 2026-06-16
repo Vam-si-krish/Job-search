@@ -6,6 +6,22 @@ import { dirname, resolve } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 
+// Find a data file, preferring the current working directory — works for the local
+// server, the CLI, and bundled serverless functions (where files sit at the task root).
+function locate(preferred, fallbackName) {
+  const tries = [];
+  if (preferred) {
+    tries.push(resolve(process.cwd(), preferred));
+    tries.push(resolve(ROOT, preferred));
+  }
+  tries.push(resolve(process.cwd(), fallbackName));
+  tries.push(resolve(ROOT, fallbackName));
+  for (const p of tries) {
+    try { if (existsSync(p)) return p; } catch {}
+  }
+  return tries[0];
+}
+
 export class ConfigError extends Error {}
 
 // --- tiny .env parser (KEY=value, # comments, optional quotes) ---
@@ -49,17 +65,12 @@ export function loadConfig(overrides = {}) {
     );
   }
 
-  const envFileExists = existsSync(resolve(ROOT, '.env'));
   const apiKey = overrides.apiKey || get(keyName);
-
-  if (!envFileExists && !apiKey) {
-    throw new ConfigError(
-      `No .env file found.\nRun:  cp .env.example .env\nThen open .env and paste your ${keyName}.`
-    );
-  }
   if (!apiKey) {
     throw new ConfigError(
-      `Missing ${keyName} in .env.\nOpen .env and paste your API key for provider "${provider}".`
+      `Missing ${keyName}.\n` +
+      `• Local: copy .env.example to .env and paste your key.\n` +
+      `• Deployed (Netlify / Render / etc.): set ${keyName} as an environment variable in the host's dashboard.`
     );
   }
 
@@ -68,8 +79,8 @@ export function loadConfig(overrides = {}) {
     apiKey,
     model: overrides.model || get('AI_MODEL', 'claude-sonnet-4-6'),
     mode: overrides.mode || get('OUTPUT_MODE', 'auto'),
-    profilePath: resolve(ROOT, get('PROFILE_PATH', './profile.json')),
-    promptPath: resolve(ROOT, get('SYSTEM_PROMPT_PATH', './system-prompt.md')),
+    profilePath: locate(get('PROFILE_PATH', ''), 'profile.json'),
+    promptPath: locate(get('SYSTEM_PROMPT_PATH', ''), 'system-prompt.md'),
     root: ROOT,
   };
 }

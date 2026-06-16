@@ -1,0 +1,27 @@
+# Netlify configuration for the Job Application Assistant.
+# The browser UI is served as static files from /public; the API runs as functions.
+
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+  # No build step — zero dependencies, static UI.
+  command = "echo 'no build step'"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"
+  # Bundle the data files the engine reads at runtime so they exist in the function.
+  included_files = ["profile.json", "system-prompt.md"]
+
+# Keep the frontend calling /api/* — proxy those to the serverless functions.
+[[redirects]]
+  from = "/api/ask"
+  to = "/.netlify/functions/ask"
+  status = 200
+
+[[redirects]]
+  from = "/api/config"
+  to = "/.netlify/functions/config"
+  status = 200

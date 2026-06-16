@@ -55,15 +55,28 @@ npm start
 Open **http://localhost:3000**, paste a question or a recruiter email, pick a mode
 (Auto / Form / Email), and click **Get Answer → Copy**.
 
-### Deploy it (so you can use it from any device)
+### Deploy to Netlify
 
-Push this folder to any Node host (Render, Railway, Fly.io, a small VPS). Instead of a
-`.env` file, set these as **environment variables** in the host's dashboard — the app
-reads env vars first, so it behaves the same once deployed:
+This repo is Netlify-ready (`netlify.toml` + `netlify/functions/`): the browser UI is
+served as static files and the API runs as serverless functions.
 
-- `AI_PROVIDER`  — e.g. `deepseek`
-- `DEEPSEEK_API_KEY`  — (or the key for whichever provider you chose)
-- `AI_MODEL`  — e.g. `deepseek-chat`
+1. Push this folder to GitHub (confirm `.env` is **not** committed — it's gitignored).
+2. In Netlify: **Add new site → Import an existing project**, pick the repo. The build
+   settings come from `netlify.toml`, so there's nothing to fill in.
+3. **Site configuration → Environment variables**, add:
+   - `AI_PROVIDER` = `deepseek`
+   - `AI_MODEL` = `deepseek-chat`
+   - `DEEPSEEK_API_KEY` = your key
+4. **Deploys → Trigger deploy**. Open the site URL, paste a question, go.
+
+> Already connected the repo (an earlier deploy ran)? Just **push these new files**, add
+> the 3 environment variables, and trigger a new deploy. If the UI build settings show a
+> "Publish directory", set it to `public`.
+
+### Or deploy as a plain Node server
+
+The same code still runs as a normal server (`npm start`) on Render, Railway, Fly.io, or a
+VPS — set the same three environment variables there.
 
 ## Or use it from the terminal
 
