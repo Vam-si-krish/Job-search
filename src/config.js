@@ -3,8 +3,17 @@ import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, '..');
+// import.meta.url can be unavailable once bundled into a serverless function —
+// never let that crash the module at load time.
+let __dirname;
+try {
+  __dirname = dirname(fileURLToPath(import.meta.url));
+} catch {
+  __dirname = process.cwd();
+}
+const ROOT = (() => {
+  try { return resolve(__dirname, '..'); } catch { return process.cwd(); }
+})();
 
 // Find a data file, preferring the current working directory — works for the local
 // server, the CLI, and bundled serverless functions (where files sit at the task root).
