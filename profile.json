@@ -1,0 +1,147 @@
+{
+  "personal": {
+    "full_name": "Vamsi Krishna Chiguruwada",
+    "preferred_name": "Vamsi",
+    "email": "vamsi@vamsikrish.com",
+    "phone": "+1 339 242 3758",
+    "city": "Boston",
+    "province_state": "Massachusetts",
+    "country": "United States",
+    "postal_code": "02145",
+    "address": "Boston",
+    "linkedin_url": "https://www.linkedin.com/in/vamsi-krish-c/",
+    "github_url": "https://github.com/vam-si-krish",
+    "portfolio_url": "https://vamsikrish.com",
+    "website_url": "https://vamsikrish.com",
+    "default_new_password": "P89Liv4jEe3j@4$"
+  },
+  "work_authorization": {
+    "legally_authorized_to_work": true,
+    "require_sponsorship": false,
+    "work_permit_type": "F-1 OPT (Initial) EAD"
+  },
+  "compensation": {
+    "salary_expectation": "90240",
+    "salary_currency": "USD",
+    "salary_range_min": "90000",
+    "salary_range_max": "140000"
+  },
+  "experience": {
+    "years_of_experience_total": "5",
+    "years_of_experience_display": "5+",
+    "education_level": "M.S. Business Analytics",
+    "current_title": "Senior Frontend Developer",
+    "current_employer": "JPMorgan Chase & Co.",
+    "employment_type": "Contract",
+    "target_role": "Senior Frontend Developer / Frontend Software Engineer",
+    "reason_for_leaving": "My current contract role at JPMorgan Chase & Co. is wrapping up, so I'm actively looking and ready to start a new role right away.",
+    "summary": "Senior Frontend Developer with 5+ years of experience designing and delivering scalable applications with React and TypeScript, complemented by backend API development using Node.js and Express. Skilled in component-driven architectures, performance tuning, and accessible, cross-browser compliant interfaces. Proven ability to integrate RESTful and GraphQL services, implement CI/CD pipelines, and collaborate with cross-functional teams."
+  },
+  "job_preferences": {
+    "actively_looking": true,
+    "open_to_contract": true,
+    "open_to_w2": true,
+    "open_to_corp_to_corp": true,
+    "open_to_full_time": true,
+    "open_to_remote": true,
+    "open_to_hybrid": true,
+    "open_to_onsite": true,
+    "notes": "Actively job-searching and very interested in moving forward. Open to contract, W2, C2C, and full-time frontend / software engineering roles. Flexible on work arrangement (remote, hybrid, or onsite) and willing to relocate anywhere in the US at my own expense. Can start as soon as possible."
+  },
+  "work_history": [
+    {
+      "company": "JPMorgan Chase & Co.",
+      "title": "Senior Frontend Developer",
+      "location": "USA",
+      "start": "Jul 2025",
+      "end": "Present",
+      "highlights": [
+        "Architected and delivered a React + TypeScript dashboard integrating GraphQL APIs, reducing data-fetch latency by 50% and supporting real-time workflows for 200+ users.",
+        "Designed a component-driven frontend architecture with reusable UI patterns and optimized state management, accelerating feature delivery across multiple modules.",
+        "Built WCAG 2.1 AA-compliant, responsive UI components with Tailwind CSS and Context API.",
+        "Optimized performance via Next.js code splitting, lazy loading, and bundle optimization.",
+        "Led migration of legacy jQuery modules to React Hooks, reducing bug reports by 25% over 6 months.",
+        "Integrated RESTful APIs with robust async handling, error boundaries, and retry logic.",
+        "Ran collaborative Git/GitHub workflows (branching, pull requests, code reviews)."
+      ]
+    },
+    {
+      "company": "Yash Technologies",
+      "title": "Frontend Developer",
+      "location": "India",
+      "start": "Sep 2022",
+      "end": "Aug 2024",
+      "highlights": [
+        "Built secure, high-performance transaction interfaces with React, Redux, and TypeScript, managing state for 10,000+ concurrent sessions in a fintech environment.",
+        "Optimized assets with SASS and Webpack, reducing CSS bundle size by ~33% with cross-browser (incl. IE11) support.",
+        "Refactored auth workflows with JWT and Axios interceptors, cutting API failure rates by 15%.",
+        "Built CI/CD pipelines with Jenkins and Docker, automating regression testing with Jest and Selenium."
+      ]
+    },
+    {
+      "company": "Msys Technologies",
+      "title": "Frontend Developer",
+      "location": "India",
+      "start": "Feb 2020",
+      "end": "Aug 2022",
+      "highlights": [
+        "Built reusable React component libraries with Bootstrap, ensuring consistent UI/UX across 15+ pages.",
+        "Resolved cross-browser rendering issues using Chrome DevTools and responsive design.",
+        "Developed dynamic, data-driven forms with JavaScript and AJAX submitting to Node.js APIs.",
+        "Implemented unit/integration tests with Jest and React Testing Library, achieving 80%+ coverage.",
+        "Refactored legacy jQuery into modern ES6+ modular architecture within Agile/Scrum."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "school": "Hult International Business School",
+      "degree": "Master of Science, Business Analytics",
+      "location": "Cambridge, MA, USA",
+      "start": "Sep 2024",
+      "end": "Aug 2025"
+    },
+    {
+      "school": "Jawaharlal Nehru Technological University",
+      "degree": "Bachelor of Technology, Computer Science & Engineering",
+      "location": "Anantapur, India",
+      "start": "Jul 2016",
+      "end": "Aug 2020"
+    }
+  ],
+  "skills_boundary": {
+    "core_web": ["HTML5", "CSS3", "JavaScript (ES6+)", "TypeScript", "AJAX"],
+    "frameworks_libraries": ["React.js", "Next.js", "Redux", "Context API", "Node.js", "Express.js", "Angular (2+)", "jQuery"],
+    "styling_ui": ["Responsive / mobile-first design", "SASS", "LESS", "Tailwind CSS", "Bootstrap", "UI/UX principles"],
+    "build_tools": ["Webpack", "Vite", "Babel", "NPM", "Yarn"],
+    "version_control_cicd": ["Git", "GitHub", "Docker", "Jenkins", "Jira"],
+    "api_integration": ["RESTful APIs", "GraphQL", "HTTP protocols", "asynchronous request handling"],
+    "testing": ["Jest", "React Testing Library", "Selenium", "Chrome DevTools"],
+    "practices": ["Agile/Scrum", "code reviews", "component-driven development", "performance optimization", "cross-browser compatibility"]
+  },
+  "resume_facts": {
+    "preserved_companies": ["JPMorgan Chase & Co.", "Yash Technologies", "Msys Technologies"],
+    "preserved_projects": [],
+    "preserved_school": "Hult International Business School",
+    "real_metrics": [
+      "Reduced data-fetch latency by 50% (JPMorgan Chase & Co.)",
+      "Reduced bug reports by 25% migrating jQuery to React Hooks (JPMorgan Chase & Co.)",
+      "Managed state for 10,000+ concurrent sessions (Yash Technologies)",
+      "Reduced CSS bundle size by ~33% (Yash Technologies)",
+      "Cut API failure rates by 15% (Yash Technologies)",
+      "Achieved 80%+ test coverage (Msys Technologies)"
+    ]
+  },
+  "eeo_voluntary": {
+    "gender": "Male",
+    "race_ethnicity": "Decline to self-identify",
+    "veteran_status": "I am not a protected veteran",
+    "disability_status": "No, I do not have a disability"
+  },
+  "availability": {
+    "earliest_start_date": "As soon as possible (within 1-2 weeks)",
+    "notice_period": "1-2 weeks",
+    "willing_to_relocate": true,
+    "relocation_notes": "Willing to relocate anywhere in the US at my own expense"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "job-application-assistant",
+  "version": "0.1.0",
+  "description": "AI assistant that answers job-application questions and recruiter emails using your profile.",
+  "type": "module",
+  "bin": {
+    "applybuddy": "./cli.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "ask": "node cli.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

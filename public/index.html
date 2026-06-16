@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Job Application Assistant</title>
+<script>
+  // Set theme before paint to avoid a flash.
+  (function () {
+    try {
+      var t = localStorage.getItem('jobapp-theme') ||
+        (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  :root {
+    --bg1: #f6f7fb; --bg2: #eceef2;
+    --card: #ffffff;
+    --ink: #16161d;
+    --muted: #6b7280;
+    --line: #e4e6eb;
+    --soft: #f1f2f6;
+    --seg-active: #ffffff;
+    --field-bg: #fcfcfd;
+    --answer-bg: #fafbfc;
+    --accent: #5b5bd6;
+    --accent-press: #4a4ac4;
+    --on-accent: #ffffff;
+    --ok: #15803d; --ok-bg: #effaf1; --ok-line:#bbe7c6;
+    --warn: #b45309; --warn-bg: #fff8eb; --warn-line:#f5d99a;
+    --bad: #b91c1c; --bad-bg: #fdf0f0; --bad-line:#f3c0c0;
+    --shadow: 0 1px 2px rgba(16,16,29,.04), 0 12px 32px -12px rgba(16,16,29,.18);
+    --radius: 16px;
+  }
+  :root[data-theme="dark"] {
+    --bg1: #14171d; --bg2: #0e1014;
+    --card: #181b21;
+    --ink: #e8eaed;
+    --muted: #969db0;
+    --line: #2a2f39;
+    --soft: #23272f;
+    --seg-active: #313742;
+    --field-bg: #12151a;
+    --answer-bg: #12151a;
+    --accent: #8b8bf5;
+    --accent-press: #7a7aee;
+    --on-accent: #0e1014;
+    --ok: #5bd98a; --ok-bg: rgba(34,197,94,.12); --ok-line: rgba(34,197,94,.30);
+    --warn: #fbbf24; --warn-bg: rgba(245,158,11,.12); --warn-line: rgba(245,158,11,.32);
+    --bad: #f87171; --bad-bg: rgba(239,68,68,.12); --bad-line: rgba(239,68,68,.32);
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 14px 36px -14px rgba(0,0,0,.6);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 50% -10%, var(--bg1) 0%, var(--bg2) 60%);
+    color: var(--ink);
+    min-height: 100vh; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    transition: background .25s ease, color .25s ease;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; font-size: 1.05rem; }
+  .logo .dot {
+    width: 26px; height: 26px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), #8b8bf0);
+    display: grid; place-items: center; color: #fff; font-size: 14px;
+  }
+  .theme-toggle {
+    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+    width: 38px; height: 38px; border-radius: 10px; cursor: pointer; font-size: 16px;
+    display: grid; place-items: center; transition: border-color .15s, transform .05s;
+  }
+  .theme-toggle:hover { border-color: var(--accent); }
+  .theme-toggle:active { transform: translateY(1px); }
+
+  h1 { font-size: 1.7rem; letter-spacing: -.02em; margin: 18px 0 6px; }
+  .sub { color: var(--muted); margin: 0; font-size: .96rem; }
+
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 20px; margin-top: 22px;
+  }
+
+  .seg { display: inline-flex; background: var(--soft); border-radius: 11px; padding: 4px; gap: 2px; }
+  .seg button {
+    border: 0; background: transparent; cursor: pointer;
+    padding: 7px 18px; border-radius: 8px; font-size: .9rem; font-weight: 600;
+    color: var(--muted); transition: all .15s ease;
+  }
+  .seg button[aria-pressed="true"] { background: var(--seg-active); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.10); }
+  .seg-label { display:block; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; font-weight:700; }
+
+  textarea {
+    width: 100%; margin-top: 16px; resize: vertical; min-height: 140px;
+    border: 1px solid var(--line); border-radius: 12px; padding: 14px 15px;
+    font: inherit; font-size: 1rem; color: var(--ink); background: var(--field-bg);
+    outline: none; transition: border-color .15s, box-shadow .15s, background .2s;
+  }
+  textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); background: var(--card); }
+  textarea::placeholder { color: var(--muted); opacity: .8; }
+
+  .row { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; gap: 12px; }
+  .hint { color: var(--muted); font-size: .85rem; }
+  kbd { font: inherit; font-size: .8rem; background: var(--soft); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: 1px 6px; }
+
+  .btn {
+    border: 0; cursor: pointer; font: inherit; font-weight: 650; font-size: .98rem;
+    background: var(--accent); color: var(--on-accent); padding: 11px 22px; border-radius: 11px;
+    display: inline-flex; align-items: center; gap: 9px; transition: background .15s, transform .05s;
+  }
+  .btn:hover { background: var(--accent-press); }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: .6; cursor: default; }
+  .spinner { width: 15px; height: 15px; border: 2px solid transparent; border-top-color: currentColor; border-radius: 50%; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #result { margin-top: 18px; }
+  [hidden] { display: none !important; }
+  .result-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .result-head h2 { font-size: .82rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 0; }
+  .copy {
+    border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer;
+    font: inherit; font-size: .85rem; font-weight: 600; padding: 6px 13px; border-radius: 9px;
+    display: inline-flex; align-items: center; gap: 7px; transition: all .15s;
+  }
+  .copy:hover { border-color: var(--accent); color: var(--accent); }
+  .copy.copied { color: var(--ok); border-color: var(--ok-line); background: var(--ok-bg); }
+
+  .answer {
+    white-space: pre-wrap; word-break: break-word;
+    background: var(--answer-bg); border: 1px solid var(--line); border-radius: 12px;
+    padding: 16px; font-size: 1.02rem;
+  }
+  .answer.empty { color: var(--muted); font-style: italic; }
+
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items: center; }
+  .chip { font-size: .78rem; font-weight: 600; color: var(--muted); background: var(--soft); border-radius: 999px; padding: 4px 11px; }
+  .badge { font-size: .78rem; font-weight: 700; border-radius: 999px; padding: 4px 11px; }
+  .conf-high { color: var(--ok); background: var(--ok-bg); }
+  .conf-medium { color: var(--warn); background: var(--warn-bg); }
+  .conf-low { color: var(--bad); background: var(--bad-bg); }
+
+  .note { color: var(--muted); font-size: .9rem; margin-top: 12px; }
+
+  .panel { margin-top: 14px; border-radius: 12px; padding: 13px 15px; font-size: .92rem; border: 1px solid; }
+  .panel.warn { background: var(--warn-bg); border-color: var(--warn-line); color: var(--warn); }
+  .panel.warn ul { margin: 8px 0 0; padding-left: 18px; }
+  .panel.err { background: var(--bad-bg); border-color: var(--bad-line); color: var(--bad); }
+
+  footer { text-align: center; color: var(--muted); font-size: .82rem; margin-top: 26px; }
+  footer code { background: var(--soft); padding: 2px 7px; border-radius: 6px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="topbar">
+        <span class="logo"><span class="dot">✓</span> ApplyBuddy</span>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+      </div>
+      <h1>Job Application Assistant</h1>
+      <p class="sub">Paste a tricky application question or a recruiter email — get the right answer from your profile, ready to copy.</p>
+    </header>
+
+    <div class="card">
+      <span class="seg-label">Mode</span>
+      <div class="seg" id="modes">
+        <button data-mode="auto" aria-pressed="true">Auto</button>
+        <button data-mode="form" aria-pressed="false">Form</button>
+        <button data-mode="email" aria-pressed="false">Email</button>
+      </div>
+
+      <textarea id="input" placeholder="e.g.  Do you now or in the future require sponsorship?
+
+…or paste a whole recruiter email and tap Email."></textarea>
+
+      <div class="row">
+        <span class="hint">Tip: press <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd> to submit</span>
+        <button class="btn" id="go">Get Answer</button>
+      </div>
+
+      <div class="panel err" id="error" hidden></div>
+
+      <div id="result" hidden>
+        <div class="result-head">
+          <h2>Answer</h2>
+          <button class="copy" id="copy">Copy</button>
+        </div>
+        <div class="answer" id="answer"></div>
+        <div class="meta" id="meta"></div>
+        <div class="panel warn" id="needs" hidden>
+          <b>⚠ Needs your input</b>
+          <ul id="needsList"></ul>
+        </div>
+        <p class="note" id="note" hidden></p>
+      </div>
+    </div>
+
+    <footer id="footer"></footer>
+  </div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const root = document.documentElement;
+  let mode = 'auto';
+
+  // theme toggle
+  const themeBtn = $('themeToggle');
+  const setThemeIcon = () => { themeBtn.textContent = root.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙'; };
+  setThemeIcon();
+  themeBtn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('jobapp-theme', next); } catch (e) {}
+    setThemeIcon();
+  });
+
+  // mode toggle
+  $('modes').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-mode]');
+    if (!btn) return;
+    mode = btn.dataset.mode;
+    [...$('modes').children].forEach((b) => b.setAttribute('aria-pressed', b === btn));
+  });
+
+  function showError(msg) { $('error').textContent = msg; $('error').hidden = false; }
+  function hideError() { $('error').hidden = true; }
+
+  function setLoading(on) {
+    const btn = $('go');
+    btn.disabled = on;
+    btn.innerHTML = on ? '<span class="spinner"></span> Thinking…' : 'Get Answer';
+  }
+
+  function render(d) {
+    $('result').hidden = false;
+    const ans = $('answer');
+    ans.textContent = d.answer && String(d.answer).trim() ? d.answer : '(left blank on purpose — see below)';
+    ans.classList.toggle('empty', !(d.answer && String(d.answer).trim()));
+
+    const meta = $('meta'); meta.innerHTML = '';
+    const chip = (t) => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = t; return s; };
+    if (d.input_type) meta.appendChild(chip('input: ' + d.input_type));
+    if (d.answer_type) meta.appendChild(chip('type: ' + d.answer_type));
+    if (d.selected_option) meta.appendChild(chip('option: ' + d.selected_option));
+    if (d.confidence) {
+      const b = document.createElement('span');
+      b.className = 'badge conf-' + d.confidence;
+      b.textContent = d.confidence + ' confidence';
+      meta.appendChild(b);
+    }
+
+    const needs = Array.isArray(d.needs_input) ? d.needs_input : [];
+    $('needs').hidden = needs.length === 0;
+    const list = $('needsList'); list.innerHTML = '';
+    needs.forEach((n) => { const li = document.createElement('li'); li.textContent = n; list.appendChild(li); });
+
+    if (d.note) { $('note').textContent = d.note; $('note').hidden = false; } else { $('note').hidden = true; }
+    $('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  async function submit() {
+    const input = $('input').value.trim();
+    hideError();
+    if (!input) { $('input').focus(); return; }
+    setLoading(true);
+    try {
+      const res = await fetch('/api/ask', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ input, mode }),
+      });
+      const data = await res.json();
+      if (!res.ok) { showError(data.error || 'Something went wrong.'); return; }
+      render(data);
+    } catch {
+      showError('Could not reach the server. Make sure it is running (npm start).');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  $('go').addEventListener('click', submit);
+  $('input').addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') submit(); });
+
+  $('copy').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText($('answer').textContent);
+      const c = $('copy'); c.textContent = '✓ Copied'; c.classList.add('copied');
+      setTimeout(() => { c.textContent = 'Copy'; c.classList.remove('copied'); }, 1600);
+    } catch { showError('Copy failed — select the text and copy manually.'); }
+  });
+
+  fetch('/api/config').then((r) => r.json()).then((c) => {
+    $('footer').innerHTML = c.error ? 'Setup needed: ' + c.error
+      : 'Powered by <code>' + c.provider + '</code> · <code>' + c.model + '</code>';
+  }).catch(() => {});
+
+  $('input').focus();
+</script>
+</body>
+</html>
